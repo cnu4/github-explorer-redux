@@ -11,13 +11,16 @@ class UserPage extends Component {
 
   constructor() {
     super();
-    this.state = {
-      repos: []
-    };
   }
 
   componentDidMount () {
     this.loadUser(this.props.params.username)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.params.username != this.props.params.username) {
+      this.loadUser(nextProps.params.username)
+    }
   }
 
   loadUser (username) {

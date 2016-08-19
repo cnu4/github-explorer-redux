@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames'
 import '../styles/image.scss';
 
 export default class Image extends React.Component {
@@ -42,7 +43,7 @@ export default class Image extends React.Component {
     return (
       <div
         id={this.props.id}
-        className="image-fade"
+        className={classNames(this.props.className, 'image-fade')}
         style={this.state.loaded ? {
           backgroundImage: `url('${this.props.src}')`,
           opacity: 1

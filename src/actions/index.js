@@ -15,11 +15,17 @@ const api = (url) =>
   })
   .then(response => response.json())
 
-export function hideLoading () {
-  return {
-    type: HIDE_LOAD_BLOCK
-  }
-}
+export const hideLoading = makeActionCreator(HIDE_LOAD_BLOCK)
+
+export const TOGGLE_NAV_MENU = 'TOGGLE_NAV_MENU'
+export const OPEN_NAV_MENU = 'OPEN_NAV_MENU'
+export const CLOSE_NAV_MENU = 'CLOSE_NAV_MENU'
+export const FULL_NAV_MENU = 'FULL_NAV_MENU'
+
+export const toggleNavMenu = makeActionCreator(TOGGLE_NAV_MENU)
+export const openNavMenu = makeActionCreator(OPEN_NAV_MENU)
+export const closeNavMenu = makeActionCreator(CLOSE_NAV_MENU)
+export const fullNavMenu = makeActionCreator(FULL_NAV_MENU)
 
 export const USER_PROFILE_RECEIVED = 'USER_PROFILE_RECEIVED'
 
@@ -39,5 +45,27 @@ export function loadUserProfileRepos (username) {
     types: [USER_PROFILE_REPOS_REQUEST, USER_PROFILE_REPOS_RECEIVED, USER_PROFILE_REPOS_FAILURE],
     callAPI: () => api('https://api.github.com/search/repositories' +
       `?q=user:${username}&sort=stars&page=1&per_page=${REPO_PER_PAGE}`)
+  }
+}
+
+export const USERS_REQUEST = 'USERS_REQUEST'
+export const USERS_RECEIVED = 'USERS_RECEIVED'
+export const USERS_FAILURE = 'USERS_FAILURE'
+
+export function getUsers (keyword) {
+  return {
+    types: [USERS_REQUEST, USERS_RECEIVED, USERS_FAILURE],
+    callAPI: () => api('https://api.github.com/legacy/user/search/' +
+      `${keyword || Math.random().toString(36).split('')[2]}%20sort:followers`)
+  }
+}
+
+function makeActionCreator(type, ...argNames) {
+  return function(...args) {
+    let action = { type }
+    argNames.forEach((arg, index) => {
+      action[argNames[index]] = args[index]
+    })
+    return action
   }
 }

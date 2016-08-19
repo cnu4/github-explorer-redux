@@ -95,3 +95,29 @@ a {
   }
 }
 
+.open-menu #menu-overlay {
+  transform: translate3d(0, 0, 0);
+}
+
+.open-menu #main-content {
+  transform: translate3d(84%, 0, 0);
+}
+
+.open-menu #nav-menu,
+.full-menu #nav-menu {
+  opacity: 0.99;
+  transform: translate3d(0, 0, 0);
+}
+
+.full-menu #menu-overlay {
+  transform: translate3d(-1000px, 0, 0);
+}
+
+.full-menu #main-content {
+  transform: translate3d(100%, 0, 0);
+  box-shadow: none;
+}
+
+.full-menu #nav-menu #search-bar #cancel-button {
+  opacity: 0.5;
+}

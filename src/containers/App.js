@@ -2,18 +2,21 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MainContent from '../containers/MainContent';
+import NavMenuContainer from '../containers/NavMenuContainer'
 import '../styles/App.scss'
+import { closeNavMenu } from '../actions'
 
 class App extends Component {
   render() {
     const {actions} = this.props;
     return (
-      <div>
+      <div className={this.props.menuStatus + '-menu'}>
         <div id="menu-overlay"
-             onClick={() => 1}>
+             onClick={() => this.props.closeNavMenu()}>
         </div>
+        <NavMenuContainer menuStatus={this.props.menuStatus}/>
         <MainContent
-          route={this.props.routes[this.props.routes.length - 1].path}
+          route={this.props.route.path}
           location={this.props.location}
         >
           {this.props.children}
@@ -28,16 +31,18 @@ class App extends Component {
 // };
 App.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
+App.propTypes = {
+  menuStatus: React.PropTypes.string.isRequired,
+  closeNavMenu: React.PropTypes.func.isRequired
+}
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
-  const props = {};
-  return props;
+  const { menuStatus } = state;
+  return {
+    menuStatus
+  };
 }
-function mapDispatchToProps(dispatch) {
-  /* Populated by react-webpack-redux:action */
-  const actions = {};
-  const actionMap = { actions: bindActionCreators(actions, dispatch) };
-  return actionMap;
-}
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, {
+  closeNavMenu
+})(App);

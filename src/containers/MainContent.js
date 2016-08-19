@@ -6,7 +6,6 @@ import '../styles/mainContent.scss'
 
 class MainContent extends Component {
   render() {
-    const {actions} = this.props;
     return (
       <div
         id="main-content"

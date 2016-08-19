@@ -5,6 +5,7 @@ import '../styles/hamburgerIcon.scss';
 export default (props) => (
   <div
     id={props.id}
+    onClick={props.onClick}
     className="nav-icon"
   >
     <div className="nav-icon-bars">

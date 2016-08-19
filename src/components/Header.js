@@ -8,6 +8,15 @@ import LoadingBlock from './LoadingBlock'
 
 export default class Header extends Component {
 
+  constructor (args) {
+    super(args)
+    this.hbIconClick = this.hbIconClick.bind(this)
+  }
+
+  hbIconClick () {
+    this.props.toggleNavMenu()
+  }
+
 	render () {
 		return (
       <div>
@@ -17,6 +26,7 @@ export default class Header extends Component {
         >
           <HamburgerIcon
             id="hamberger-menu"
+            onClick={this.hbIconClick}
           />
           <Link to="/">
             <div id="brand-logo"></div>
@@ -27,9 +37,14 @@ export default class Header extends Component {
           <LoadingBlock
             done={this.props.doneLoading}
             failed={this.props.failed}
-            hideLoading={this.props.actions.hideLoading}
+            hideLoading={this.props.hideLoading}
           /> : null}
       </div>
     )
 	}
 }
+
+Header.propTypes = {
+  toggleNavMenu: PropTypes.func.isRequired,
+  hideLoading: PropTypes.func.isRequired
+};

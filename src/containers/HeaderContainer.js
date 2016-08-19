@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { hideLoading } from '../actions'
+import { hideLoading, toggleNavMenu } from '../actions'
 
 class HeaderContainer extends Component {
 
@@ -15,9 +15,11 @@ class HeaderContainer extends Component {
 	}
 }
 
-// HeaderContainer.propTypes = {
-//   router: PropTypes.object.isRequired
-// };
+HeaderContainer.propTypes = {
+  route: PropTypes.string.isRequired,
+  toggleNavMenu: PropTypes.func.isRequired,
+  hideLoading: PropTypes.func.isRequired
+};
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
   const { homeLoading } = state
@@ -25,10 +27,7 @@ function mapStateToProps(state) {
     ...homeLoading
   }
 }
-function mapDispatchToProps(dispatch) {
-  /* Populated by react-webpack-redux:action */
-  const actions = { hideLoading };
-  const actionMap = { actions: bindActionCreators(actions, dispatch) };
-  return actionMap;
-}
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);
+export default connect(mapStateToProps, {
+  hideLoading,
+  toggleNavMenu
+})(HeaderContainer);

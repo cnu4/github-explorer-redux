@@ -28,6 +28,30 @@ function userProfileRepos (state = [], action) {
   }
 }
 
+function users (state = [], action) {
+  switch (action.type) {
+    case ActionTypes.USERS_RECEIVED:
+      return action.response.users.slice(0, 15)
+    default:
+      return state
+  }
+}
+
+function menuStatus (state = 'close', action) {
+  switch (action.type) {
+    case ActionTypes.TOGGLE_NAV_MENU:
+      return state === 'close' ? 'open' : 'close'
+    case ActionTypes.OPEN_NAV_MENU:
+      return 'open'
+    case ActionTypes.CLOSE_NAV_MENU:
+      return 'close'
+    case ActionTypes.FULL_NAV_MENU:
+      return 'full'
+    default:
+      return state
+  }
+}
+
 function homeLoading (state = {showLoading: false, doneLoading: false, failed: false}, action) {
   switch (action.type) {
     case ActionTypes.USER_PROFILE_REPOS_REQUEST:
@@ -59,10 +83,29 @@ function homeLoading (state = {showLoading: false, doneLoading: false, failed: f
   }
 }
 
+function userSearching (state = {searching: false}, action) {
+  switch (action.type) {
+    case ActionTypes.USERS_REQUEST:
+      return {
+        searching: true
+      }
+    case ActionTypes.USERS_FAILURE:
+    case ActionTypes.USERS_RECEIVED:
+      return {
+        searching: false
+      }
+    default:
+      return state
+  }
+}
+
 const rootReducers = combineReducers({
 	userProfile,
   userProfileRepos,
+  users,
   homeLoading,
+  userSearching,
+  menuStatus,
 	routing
 })
 
