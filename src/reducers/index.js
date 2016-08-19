@@ -8,15 +8,12 @@
  */
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux'
-import {
-  REQUEST_FAILED, TRIGGER_LOAD_ANIMATION,
-  USER_PROFILE_RECEIVED,USER_PROFILE_REPOS_RECEIVED,
-  TRIGGER_LOAD_ANIMATION_DONE } from '../actions'
+import * as ActionTypes from '../actions'
 /* Populated by react-webpack-redux:reducer */
 function userProfile (state = {}, action) {
   switch (action.type) {
-    case USER_PROFILE_RECEIVED:
-      return action.profile
+    case ActionTypes.USER_PROFILE_RECEIVED:
+      return action.response
     default:
       return state
   }
@@ -24,29 +21,38 @@ function userProfile (state = {}, action) {
 
 function userProfileRepos (state = [], action) {
   switch (action.type) {
-    case USER_PROFILE_REPOS_RECEIVED:
-      return action.repos
+    case ActionTypes.USER_PROFILE_REPOS_RECEIVED:
+      return action.response.items
     default:
       return state
   }
 }
 
-function loading (state = {showLoading: false, doneLoading: false}, action) {
+function homeLoading (state = {showLoading: false, doneLoading: false, failed: false}, action) {
   switch (action.type) {
-    case TRIGGER_LOAD_ANIMATION:
+    case ActionTypes.USER_PROFILE_REPOS_REQUEST:
       return {
         showLoading: true,
-        doneLoading: state.doneLoading
+        doneLoading: false,
+        failed: false
       }
-    case TRIGGER_LOAD_ANIMATION_DONE:
+    case ActionTypes.USER_PROFILE_REPOS_RECEIVED:
       return {
         showLoading: true,
-        doneLoading: true
+        doneLoading: true,
+        failed: false
       }
-    case REQUEST_FAILED:
+    case ActionTypes.USER_PROFILE_REPOS_FAILURE:
+      return {
+        showLoading: true,
+        doneLoading: false,
+        failed: true
+      }
+    case ActionTypes.HIDE_LOAD_BLOCK:
       return {
         showLoading: false,
-        doneLoading: false
+        doneLoading: false,
+        failed: false
       }
     default:
       return state
@@ -56,7 +62,7 @@ function loading (state = {showLoading: false, doneLoading: false}, action) {
 const rootReducers = combineReducers({
 	userProfile,
   userProfileRepos,
-  loading,
+  homeLoading,
 	routing
 })
 

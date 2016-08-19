@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { hideLoading } from '../actions'
 
 class HeaderContainer extends Component {
 
@@ -19,15 +20,14 @@ class HeaderContainer extends Component {
 // };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
-  const { loading } = state
+  const { homeLoading } = state
   return {
-    showLoading: loading.showLoading,
-    doneLoading: loading.doneLoading
+    ...homeLoading
   }
 }
 function mapDispatchToProps(dispatch) {
   /* Populated by react-webpack-redux:action */
-  const actions = {};
+  const actions = { hideLoading };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;
 }

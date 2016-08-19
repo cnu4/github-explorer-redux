@@ -21,6 +21,9 @@ export default class LoadingBlock extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.done) {
       this.setState({ three: true });
+      setTimeout(() => {
+        this.props.hideLoading()
+      }, 600)
     }
   }
 
@@ -35,7 +38,8 @@ export default class LoadingBlock extends React.Component {
         className={classNames({
           one: this.state.one,
           two: this.state.two,
-          three: this.state.three
+          three: this.state.three,
+          failed: this.props.failed
         })}
       >
       </div>

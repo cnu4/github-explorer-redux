@@ -20,7 +20,7 @@
     "test:watch": "karma start --autoWatch=true --singleRun=false"
   },
   "repository": "",
-  "keywords": [],
+  "keywords": ["github", "react", "redux"],
   "author": "fangxw",
   "devDependencies": {
     "babel-core": "^6.0.0",

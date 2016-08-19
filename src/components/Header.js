@@ -26,6 +26,8 @@ export default class Header extends Component {
         {this.props.showLoading ?
           <LoadingBlock
             done={this.props.doneLoading}
+            failed={this.props.failed}
+            hideLoading={this.props.actions.hideLoading}
           /> : null}
       </div>
     )

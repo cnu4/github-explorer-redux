@@ -3,11 +3,9 @@ import 'isomorphic-fetch'
 const TOKEN = '48d499e1bbc2e206d1e4f720f101af12a5918806';
 const REPO_PER_PAGE = 10;
 
-export const REQUEST_FAILED = 'REQUEST_FAILED'
-export const TRIGGER_LOAD_ANIMATION = 'TRIGGER_LOAD_ANIMATION'
-export const TRIGGER_LOAD_ANIMATION_DONE = 'TRIGGER_LOAD_ANIMATION_DONE'
-export const USER_PROFILE_RECEIVED = 'USER_PROFILE_RECEIVED'
-export const USER_PROFILE_REPOS_RECEIVED = 'USER_PROFILE_REPOS_RECEIVED'
+export const HIDE_LOAD_BLOCK = 'HIDE_LOAD_BLOCK'
+export const DEFAULT_REQUEST = 'DEFAULT_REQUEST'
+export const DEFAULT_FAILURE = 'DEFAULT_FAILURE'
 
 const api = (url) =>
   fetch(url, {
@@ -17,45 +15,29 @@ const api = (url) =>
   })
   .then(response => response.json())
 
-
-export function loadUserProfile (username) {
-  return function (dispatch, getState) {
-    dispatch({
-      type: 'TRIGGER_LOAD_ANIMATION'
-    })
-    api(`https://api.github.com/users/${username}`).then(
-      profile => {
-        dispatch({
-          type: USER_PROFILE_RECEIVED,
-          profile
-        })
-        dispatch({
-          type: TRIGGER_LOAD_ANIMATION_DONE
-        })
-      },
-      error => dispatch({
-        type: REQUEST_FAILED,
-        error
-      })
-    )
+export function hideLoading () {
+  return {
+    type: HIDE_LOAD_BLOCK
   }
 }
 
+export const USER_PROFILE_RECEIVED = 'USER_PROFILE_RECEIVED'
+
+export function loadUserProfile (username) {
+  return {
+    types: [DEFAULT_REQUEST, USER_PROFILE_RECEIVED, DEFAULT_FAILURE],
+    callAPI: () => api(`https://api.github.com/users/${username}`)
+  }
+}
+
+export const USER_PROFILE_REPOS_REQUEST = 'USER_PROFILE_REPOS_REQUEST'
+export const USER_PROFILE_REPOS_RECEIVED = 'USER_PROFILE_REPOS_RECEIVED'
+export const USER_PROFILE_REPOS_FAILURE = 'USER_PROFILE_REPOS_FAILURE'
+
 export function loadUserProfileRepos (username) {
-  return function (dispatch, getState) {
-    dispatch({
-      type: 'TRIGGER_LOAD_ANIMATION'
-    })
-    api('https://api.github.com/search/repositories' +
-    `?q=user:${username}&sort=stars&page=1&per_page=${REPO_PER_PAGE}`).then(
-      data => dispatch({
-        type: USER_PROFILE_REPOS_RECEIVED,
-        repos: data.items
-      }),
-      error => dispatch({
-        type: REQUEST_FAILED,
-        error
-      })
-    )
+  return {
+    types: [USER_PROFILE_REPOS_REQUEST, USER_PROFILE_REPOS_RECEIVED, USER_PROFILE_REPOS_FAILURE],
+    callAPI: () => api('https://api.github.com/search/repositories' +
+      `?q=user:${username}&sort=stars&page=1&per_page=${REPO_PER_PAGE}`)
   }
 }
