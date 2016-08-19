@@ -9,6 +9,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux'
 import * as ActionTypes from '../actions'
+import { REPO_PER_PAGE } from '../actions'
 /* Populated by react-webpack-redux:reducer */
 function userProfile (state = {}, action) {
   switch (action.type) {
@@ -55,18 +56,22 @@ function menuStatus (state = 'close', action) {
 function homeLoading (state = {showLoading: false, doneLoading: false, failed: false}, action) {
   switch (action.type) {
     case ActionTypes.USER_PROFILE_REPOS_REQUEST:
+    case ActionTypes.USER_REPOS_REQUEST:
       return {
         showLoading: true,
         doneLoading: false,
         failed: false
       }
     case ActionTypes.USER_PROFILE_REPOS_RECEIVED:
+    case ActionTypes.USER_REPOS_RECEIVED:
+    case ActionTypes.USER_REPOS_NEXT_PAGE_RECEIVED:
       return {
         showLoading: true,
         doneLoading: true,
         failed: false
       }
     case ActionTypes.USER_PROFILE_REPOS_FAILURE:
+    case ActionTypes.USER_REPOS_FAILURE:
       return {
         showLoading: true,
         doneLoading: false,
@@ -99,10 +104,35 @@ function userSearching (state = {searching: false}, action) {
   }
 }
 
+const repoPaginationInit = {
+  page: 1,
+  repos: [],
+  complete: false
+}
+function repoPagination (state = repoPaginationInit, action) {
+  switch (action.type) {
+    case ActionTypes.USER_REPOS_RECEIVED:
+      return {
+        page: 1,
+        repos: action.response.items,
+        complete: action.response.items.length < REPO_PER_PAGE
+      }
+    case ActionTypes.USER_REPOS_NEXT_PAGE_RECEIVED:
+      return {
+        page: state.page + 1,
+        repos: state.repos.concat(action.response.items),
+        complete: action.response.items.length < REPO_PER_PAGE
+      }
+    default:
+      return state
+  }
+}
+
 const rootReducers = combineReducers({
 	userProfile,
   userProfileRepos,
   users,
+  repoPagination,
   homeLoading,
   userSearching,
   menuStatus,

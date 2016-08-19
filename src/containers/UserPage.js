@@ -34,7 +34,6 @@ class UserPage extends Component {
   }
 
   render() {
-    const {actions} = this.props;
     return (
       <div id="user-page">
         <Profile

@@ -1,7 +1,7 @@
 import 'isomorphic-fetch'
 
 const TOKEN = '48d499e1bbc2e206d1e4f720f101af12a5918806';
-const REPO_PER_PAGE = 10;
+export const REPO_PER_PAGE = 10;
 
 export const HIDE_LOAD_BLOCK = 'HIDE_LOAD_BLOCK'
 export const DEFAULT_REQUEST = 'DEFAULT_REQUEST'
@@ -57,6 +57,23 @@ export function getUsers (keyword) {
     types: [USERS_REQUEST, USERS_RECEIVED, USERS_FAILURE],
     callAPI: () => api('https://api.github.com/legacy/user/search/' +
       `${keyword || Math.random().toString(36).split('')[2]}%20sort:followers`)
+  }
+}
+
+export const USER_REPOS_REQUEST = 'USER_REPOS_REQUEST'
+export const USER_REPOS_RECEIVED = 'USER_REPOS_RECEIVED'
+export const USER_REPOS_NEXT_PAGE_RECEIVED = 'USER_REPOS_NEXT_PAGE_RECEIVED'
+export const USER_REPOS_FAILURE = 'USER_REPOS_FAILURE'
+
+export function searchUserRepos (user, keyword, page) {
+  let types = [USER_REPOS_REQUEST, USER_REPOS_RECEIVED, USER_REPOS_FAILURE]
+  if (+page > 1) {
+    types[1] = USER_REPOS_NEXT_PAGE_RECEIVED
+  }
+  return {
+    types,
+    callAPI: () => api('https://api.github.com/search/repositories' +
+      `?q=${keyword}%20user:${user}&sort=updated&page=${page}&per_page=${REPO_PER_PAGE}`)
   }
 }
 
