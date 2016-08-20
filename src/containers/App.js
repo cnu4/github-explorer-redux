@@ -16,8 +16,9 @@ class App extends Component {
         </div>
         <NavMenuContainer menuStatus={this.props.menuStatus}/>
         <MainContent
-          route={this.props.route.path}
+          route={this.props.routes[this.props.routes.length - 1].path}
           location={this.props.location}
+          params={this.props.params}
         >
           {this.props.children}
         </MainContent>

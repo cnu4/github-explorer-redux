@@ -10,6 +10,8 @@ import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux'
 import * as ActionTypes from '../actions'
 import { REPO_PER_PAGE } from '../actions'
+import { Base64 } from 'js-base64'
+
 /* Populated by react-webpack-redux:reducer */
 function userProfile (state = {}, action) {
   switch (action.type) {
@@ -57,6 +59,7 @@ function homeLoading (state = {showLoading: false, doneLoading: false, failed: f
   switch (action.type) {
     case ActionTypes.USER_PROFILE_REPOS_REQUEST:
     case ActionTypes.USER_REPOS_REQUEST:
+    case ActionTypes.REPO_DETAIL_REQUEST:
       return {
         showLoading: true,
         doneLoading: false,
@@ -65,6 +68,7 @@ function homeLoading (state = {showLoading: false, doneLoading: false, failed: f
     case ActionTypes.USER_PROFILE_REPOS_RECEIVED:
     case ActionTypes.USER_REPOS_RECEIVED:
     case ActionTypes.USER_REPOS_NEXT_PAGE_RECEIVED:
+    case ActionTypes.REPO_DETAIL_RECRIVED:
       return {
         showLoading: true,
         doneLoading: true,
@@ -72,6 +76,7 @@ function homeLoading (state = {showLoading: false, doneLoading: false, failed: f
       }
     case ActionTypes.USER_PROFILE_REPOS_FAILURE:
     case ActionTypes.USER_REPOS_FAILURE:
+    case ActionTypes.REPO_DETAIL_FAILURE:
       return {
         showLoading: true,
         doneLoading: false,
@@ -128,11 +133,77 @@ function repoPagination (state = repoPaginationInit, action) {
   }
 }
 
+function repoDetail (state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.REPO_DETAIL_RECRIVED:
+      return action.response
+    default:
+      return state
+  }
+}
+
+function repoReadme (state = '', action) {
+  switch (action.type) {
+    case ActionTypes.REPO_README_RECRIVED:
+      return (action.response.content && Base64.decode(action.response.content.replace(/\s/g, ''))) || ''
+    default:
+      return state
+  }
+}
+
+function repoContents (state = [], action) {
+  switch (action.type) {
+    case ActionTypes.REPO_CONTENTS_RECRIVED:
+      return action.response.sort((a, b) => a.type.localeCompare(b.type))
+    default:
+      return state
+  }
+}
+
+function repoContribs (state = [], action) {
+  switch (action.type) {
+    case ActionTypes.REPO_CONTRIBS_RECRIVED:
+      return action.response
+    default:
+      return state
+  }
+}
+
+function repoLanguages (state = [], action) {
+  switch (action.type) {
+    case ActionTypes.REPO_LANGUAGES_RECRIVED:
+      const languages = action.response
+      const newLanguages = Object.keys(languages)
+        .map(key => ({ name: key, value: languages[key] }))
+
+      let total = 0;
+      if (newLanguages.length === 0) {
+        total = 0;
+      } else if (newLanguages.length === 1) {
+        total = newLanguages[0].value;
+      } else {
+        total = newLanguages.reduce((a, b) => ({ value: a.value + b.value })).value;
+      }
+
+      return newLanguages.map(a => ({
+        name: a.name,
+        value: Math.round(1000 * a.value / total) / 10
+      }))
+    default:
+      return state
+  }
+}
+
 const rootReducers = combineReducers({
 	userProfile,
   userProfileRepos,
   users,
   repoPagination,
+  repoDetail,
+  repoReadme,
+  repoContents,
+  repoContribs,
+  repoLanguages,
   homeLoading,
   userSearching,
   menuStatus,

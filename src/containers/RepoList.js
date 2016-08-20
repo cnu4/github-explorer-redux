@@ -120,10 +120,6 @@ class RepoList extends Component {
 }
 
 RepoList.propTypes = {
-  // userProfile: PropTypes.object.isRequired,
-  // repos: PropTypes.array.isRequired,
-  // loadUserProfile: PropTypes.func.isRequired,
-  // loadUserProfileRepos: PropTypes.func.isRequired
   page: PropTypes.number.isRequired,
   repos: PropTypes.array.isRequired,
   complete: PropTypes.bool.isRequired,

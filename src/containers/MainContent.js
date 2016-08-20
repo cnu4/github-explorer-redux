@@ -10,7 +10,7 @@ class MainContent extends Component {
       <div
         id="main-content"
       >
-        <HeaderContainer route={this.props.route} />
+        <HeaderContainer route={this.props.route} params={this.props.params}/>
         <div
           id="scroll-section"
           ref="scrollSection"

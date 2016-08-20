@@ -16,9 +16,9 @@ class HeaderContainer extends Component {
 }
 
 HeaderContainer.propTypes = {
-  route: PropTypes.string.isRequired,
   toggleNavMenu: PropTypes.func.isRequired,
-  hideLoading: PropTypes.func.isRequired
+  hideLoading: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */

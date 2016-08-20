@@ -35,5 +35,9 @@ config.module.loaders.push({
     [ path.join(__dirname, '/../src') ]
   )
 });
+// config.module.loaders.push({
+//   test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+//   loader: 'url-loader?limit=100000' }
+// )
 
 module.exports = config;

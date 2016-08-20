@@ -65,7 +65,7 @@ export const USER_REPOS_RECEIVED = 'USER_REPOS_RECEIVED'
 export const USER_REPOS_NEXT_PAGE_RECEIVED = 'USER_REPOS_NEXT_PAGE_RECEIVED'
 export const USER_REPOS_FAILURE = 'USER_REPOS_FAILURE'
 
-export function searchUserRepos (user, keyword, page) {
+export function searchUserRepos (username, keyword, page) {
   let types = [USER_REPOS_REQUEST, USER_REPOS_RECEIVED, USER_REPOS_FAILURE]
   if (+page > 1) {
     types[1] = USER_REPOS_NEXT_PAGE_RECEIVED
@@ -73,7 +73,54 @@ export function searchUserRepos (user, keyword, page) {
   return {
     types,
     callAPI: () => api('https://api.github.com/search/repositories' +
-      `?q=${keyword}%20user:${user}&sort=updated&page=${page}&per_page=${REPO_PER_PAGE}`)
+      `?q=${keyword}%20user:${username}&sort=updated&page=${page}&per_page=${REPO_PER_PAGE}`)
+  }
+}
+
+export const REPO_DETAIL_REQUEST = 'REPO_DETAIL_REQUEST'
+export const REPO_DETAIL_RECRIVED = 'REPO_DETAIL_RECRIVED'
+export const REPO_DETAIL_FAILURE = 'REPO_DETAIL_FAILURE'
+
+export function getRepoDetail (username, repoName) {
+  return {
+    types: [REPO_DETAIL_REQUEST, REPO_DETAIL_RECRIVED, REPO_DETAIL_FAILURE],
+    callAPI: () => api(`https://api.github.com/repos/${username}/${repoName}`)
+  }
+}
+
+export const REPO_README_RECRIVED = 'REPO_README_RECRIVED'
+
+export function getReadme (username, repoName) {
+  return {
+    types: [DEFAULT_REQUEST, REPO_README_RECRIVED, DEFAULT_FAILURE],
+    callAPI: () => api(`https://api.github.com/repos/${username}/${repoName}/readme`)
+  }
+}
+
+export const REPO_CONTENTS_RECRIVED = 'REPO_CONTENTS_RECRIVED'
+
+export function getRepoContents (username, repoName) {
+  return {
+    types: [DEFAULT_REQUEST, REPO_CONTENTS_RECRIVED, DEFAULT_FAILURE],
+    callAPI: () => api(`https://api.github.com/repos/${username}/${repoName}/contents`)
+  }
+}
+
+export const REPO_CONTRIBS_RECRIVED = 'REPO_CONTRIBS_RECRIVED'
+
+export function getContribs (username, repoName) {
+  return {
+    types: [DEFAULT_REQUEST, REPO_CONTRIBS_RECRIVED, DEFAULT_FAILURE],
+    callAPI: () => api(`https://api.github.com/repos/${username}/${repoName}/contributors`)
+  }
+}
+
+export const REPO_LANGUAGES_RECRIVED = 'REPO_LANGUAGES_RECRIVED'
+
+export function getLanguages (username, repoName) {
+  return {
+    types: [DEFAULT_REQUEST, REPO_LANGUAGES_RECRIVED, DEFAULT_FAILURE],
+    callAPI: () => api(`https://api.github.com/repos/${username}/${repoName}/languages`)
   }
 }
 

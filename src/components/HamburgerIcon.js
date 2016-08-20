@@ -6,7 +6,10 @@ export default (props) => (
   <div
     id={props.id}
     onClick={props.onClick}
-    className="nav-icon"
+    className={classNames('nav-icon', {
+      open: props.open,
+      back: props.back
+    })}
   >
     <div className="nav-icon-bars">
       <span></span>
