@@ -7,7 +7,6 @@ import '../styles/repoItem.scss';
 export default class RepoItem extends React.Component {
   constructor(args) {
     super(args);
-    this.click = this.click.bind(this);
   }
 
   render() {

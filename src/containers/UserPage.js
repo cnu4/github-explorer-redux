@@ -5,7 +5,7 @@ import Profile from '../components/Profile';
 import RepoItem from '../components/RepoItem';
 import { Link } from 'react-router';
 import '../styles/userPage.scss'
-import { loadUserProfile, loadUserProfileRepos } from '../actions'
+import { loadUserProfile, loadUserProfileRepos, getRandomUser } from '../actions'
 
 class UserPage extends Component {
 
@@ -21,6 +21,10 @@ class UserPage extends Component {
     if (nextProps.params.username != this.props.params.username) {
       this.loadUser(nextProps.params.username)
     }
+    if (nextProps.randomUser.login && !this.props.params.username && !this.randomUser) {
+      this.randomUser = nextProps.randomUser.login
+      this.loadUser(nextProps.randomUser.login)
+    }
   }
 
   loadUser (username) {
@@ -28,8 +32,7 @@ class UserPage extends Component {
       this.props.loadUserProfile(username)
       this.props.loadUserProfileRepos(username)
     } else {
-      this.props.loadUserProfile('cnu4')
-      this.props.loadUserProfileRepos('cnu4')
+      this.props.getRandomUser()
     }
   }
 
@@ -56,18 +59,22 @@ class UserPage extends Component {
 UserPage.propTypes = {
   userProfile: PropTypes.object.isRequired,
   repos: PropTypes.array.isRequired,
+  randomUser: PropTypes.object.isRequired,
   loadUserProfile: PropTypes.func.isRequired,
-  loadUserProfileRepos: PropTypes.func.isRequired
+  loadUserProfileRepos: PropTypes.func.isRequired,
+  getRandomUser: PropTypes.func.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
-  const { userProfile, userProfileRepos } = state
+  const { userProfile, userProfileRepos, randomUser } = state
   return {
     userProfile,
-    repos: userProfileRepos
+    repos: userProfileRepos,
+    randomUser
   }
 }
 export default connect(mapStateToProps, {
   loadUserProfile,
-  loadUserProfileRepos
+  loadUserProfileRepos,
+  getRandomUser
 })(UserPage);

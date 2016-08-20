@@ -31,11 +31,15 @@ function getDefaultModules() {
         loader: 'style-loader!css-loader!postcss-loader!stylus-loader'
       },
       {
-        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+        test: /\.(png|jpg|gif|woff(\?v=\d+\.\d+\.\d+)?|woff2(\?v=\d+\.\d+\.\d+)?|eot(\?v=\d+\.\d+\.\d+)?|ttf|otf)$/,
         loader: 'url-loader?limit=8192'
       },
       {
-        test: /\.(mp4|ogg|svg)$/,
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.(mp4|ogg|svg(\?v=\d+\.\d+\.\d+)?)$/,
         loader: 'file-loader'
       },
       {

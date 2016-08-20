@@ -40,6 +40,15 @@ function users (state = [], action) {
   }
 }
 
+function randomUser (state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.RANDOM_USER_RECEIVED:
+      return action.response.items[0]
+    default:
+      return state
+  }
+}
+
 function menuStatus (state = 'close', action) {
   switch (action.type) {
     case ActionTypes.TOGGLE_NAV_MENU:
@@ -197,6 +206,7 @@ function repoLanguages (state = [], action) {
 const rootReducers = combineReducers({
 	userProfile,
   userProfileRepos,
+  randomUser,
   users,
   repoPagination,
   repoDetail,

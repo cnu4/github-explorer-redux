@@ -36,6 +36,15 @@ export function loadUserProfile (username) {
   }
 }
 
+export const RANDOM_USER_RECEIVED = 'RANDOM_USER_RECEIVED'
+
+export function getRandomUser () {
+  return {
+    types: [DEFAULT_REQUEST, RANDOM_USER_RECEIVED, DEFAULT_FAILURE],
+    callAPI: () => api('https://api.github.com/search/users?q=type:user&page=1&per_page=1')
+  }
+}
+
 export const USER_PROFILE_REPOS_REQUEST = 'USER_PROFILE_REPOS_REQUEST'
 export const USER_PROFILE_REPOS_RECEIVED = 'USER_PROFILE_REPOS_RECEIVED'
 export const USER_PROFILE_REPOS_FAILURE = 'USER_PROFILE_REPOS_FAILURE'

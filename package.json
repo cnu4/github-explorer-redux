@@ -74,6 +74,7 @@
     "classnames": "^2.2.5",
     "core-js": "^2.0.0",
     "filesize": "^3.3.0",
+    "font-awesome": "^4.6.3",
     "js-base64": "^2.1.9",
     "moment": "^2.14.1",
     "normalize.css": "^4.0.0",
