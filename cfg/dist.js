@@ -11,6 +11,7 @@ let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
+  output: Object.assign({}, baseConfig.output, {publicPath: '/github-explorer-redux/assets/'}), // github page
   cache: false,
   devtool: 'sourcemap',
   plugins: [

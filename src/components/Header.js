@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import HamburgerIcon from './HamburgerIcon'
 import LoadingBlock from './LoadingBlock'
 import { matchParams } from '../utils/router'
-import { browserHistory } from 'react-router'
 
 export default class Header extends Component {
 
@@ -81,7 +80,8 @@ export default class Header extends Component {
     const backRoute = this.shouldShowBckBtn(this.props.route)
     if (backRoute) {
       const path = matchParams(backRoute, this.props.params)
-      browserHistory.push(path)
+      this.context.router.push(path)
+      // browserHistory.push(path)
     } else {
       this.props.toggleNavMenu()
     }
@@ -119,3 +119,7 @@ Header.propTypes = {
   toggleNavMenu: PropTypes.func.isRequired,
   hideLoading: PropTypes.func.isRequired
 };
+
+Header.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}

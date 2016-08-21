@@ -4,7 +4,6 @@ import SearchInput from './SearchInput'
 import Image from './Image'
 import '../styles/navMenu.scss'
 import { fullNavMenu } from '../actions'
-import { browserHistory } from 'react-router'
 
 export default class NavMenu extends Component {
 
@@ -36,7 +35,8 @@ export default class NavMenu extends Component {
 
   userClick (path) {
     this.props.closeNavMenu()
-    browserHistory.push(path)
+    // browserHistory.push(path)
+    this.context.router.push(path)
   }
 
 	render () {
@@ -107,3 +107,7 @@ NavMenu.propTypes = {
   getUsers: PropTypes.func.isRequired,
   searching: PropTypes.bool.isRequired
 };
+
+NavMenu.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
